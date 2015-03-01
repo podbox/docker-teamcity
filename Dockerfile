@@ -10,11 +10,11 @@ ENV TEAMCITY_VERSION 9.0.2
 RUN curl -LO http://download.jetbrains.com/teamcity/TeamCity-$TEAMCITY_VERSION.war \
  && unzip -qq TeamCity-$TEAMCITY_VERSION.war -d /apache-tomcat/webapps/teamcity \
  && rm -f TeamCity-$TEAMCITY_VERSION.war \
- && rm -f /apache-tomcat/webapps/teamcity/WEB-INF/lib/tomcat-*.jar
+ && rm -f /apache-tomcat/webapps/teamcity/WEB-INF/lib/tomcat-*.jar \
 
-RUN echo '<meta name="mobile-web-app-capable" content="yes">' >> /apache-tomcat/webapps/teamcity/WEB-INF/tags/pageMeta.tag
+ && echo '<meta name="mobile-web-app-capable" content="yes">' >> /apache-tomcat/webapps/teamcity/WEB-INF/tags/pageMeta.tag \
 
-RUN sed -i 's/<Connector port="8080"/<Connector port="8080" useBodyEncodingForURI="true"/' /apache-tomcat/conf/server.xml \
+ && sed -i 's/<Connector port="8080"/<Connector port="8080" useBodyEncodingForURI="true"/' /apache-tomcat/conf/server.xml \
  && sed -i 's/connectionTimeout="20000"/connectionTimeout="60000"/'                        /apache-tomcat/conf/server.xml
 
 RUN useradd -m teamcity \
