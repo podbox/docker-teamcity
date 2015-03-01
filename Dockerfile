@@ -21,7 +21,8 @@ RUN sed -i 's/<Connector port="8080"/<Connector port="8080" useBodyEncodingForUR
  && sed -i 's/connectionTimeout="20000"/connectionTimeout="60000"/'                        /apache-tomcat/conf/server.xml
 
 EXPOSE 8080
-CMD ["/apache-tomcat/bin/catalina.sh", "run"]
+WORKDIR /apache-tomcat
+CMD ["./bin/catalina.sh", "run"]
 
 # --------------------------------------------------------------------- teamcity
 ENV TEAMCITY_VERSION 9.0.2
