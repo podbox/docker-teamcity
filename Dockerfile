@@ -13,6 +13,9 @@ ENV CATALINA_OPTS \
  -Dfile.encoding=UTF-8 \
  -Duser.timezone=Europe/Paris
 
+RUN sed -i 's/<Connector port="8080"/<Connector port="8080" useBodyEncodingForURI="true"/' /apache-tomcat/conf/server.xml \
+ && sed -i 's/connectionTimeout="20000"/connectionTimeout="60000"/'                        /apache-tomcat/conf/server.xml
+
 EXPOSE 8080
 
 # --------------------------------------------------------------------- teamcity
@@ -22,14 +25,18 @@ RUN curl -LO http://download.jetbrains.com/teamcity/TeamCity-$TEAMCITY_VERSION.w
  && unzip -qq TeamCity-$TEAMCITY_VERSION.war -d /apache-tomcat/webapps/teamcity \
  && rm -f TeamCity-$TEAMCITY_VERSION.war \
  && rm -f /apache-tomcat/webapps/teamcity/WEB-INF/lib/tomcat-*.jar \
- && chown -R teamcity:teamcity /apache-tomcat \
 
- && echo '<meta name="mobile-web-app-capable" content="yes">' >> /apache-tomcat/webapps/teamcity/WEB-INF/tags/pageMeta.tag \
+ && rm -f /apache-tomcat/webapps/teamcity/WEB-INF/plugins/clearcase.zip     \
+ && rm -f /apache-tomcat/webapps/teamcity/WEB-INF/plugins/jetbrains.git.zip \
+ && rm -f /apache-tomcat/webapps/teamcity/WEB-INF/plugins/mercurial.zip     \
+ && rm -f /apache-tomcat/webapps/teamcity/WEB-INF/plugins/*-distributor.zip \
+ && rm -f /apache-tomcat/webapps/teamcity/WEB-INF/plugins/dot*.zip          \
 
- && sed -i 's/<Connector port="8080"/<Connector port="8080" useBodyEncodingForURI="true"/' /apache-tomcat/conf/server.xml \
- && sed -i 's/connectionTimeout="20000"/connectionTimeout="60000"/'                        /apache-tomcat/conf/server.xml
+ && mkdir /logs \
+ && chown -R teamcity:teamcity /apache-tomcat /logs \
+
+ && echo '<meta name="mobile-web-app-capable" content="yes">' >> /apache-tomcat/webapps/teamcity/WEB-INF/tags/pageMeta.tag
 
 
 USER teamcity
-WORKDIR /apache-tomcat
 CMD ["/apache-tomcat/bin/catalina.sh", "run"]
