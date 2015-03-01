@@ -33,7 +33,6 @@ RUN curl -LO http://download.jetbrains.com/teamcity/TeamCity-$TEAMCITY_VERSION.w
  && rm -f /apache-tomcat/webapps/teamcity/WEB-INF/lib/tomcat-*.jar \
 
  && rm -f  /apache-tomcat/webapps/teamcity/WEB-INF/plugins/clearcase.zip     \
- && rm -f  /apache-tomcat/webapps/teamcity/WEB-INF/plugins/jetbrains.git.zip \
  && rm -f  /apache-tomcat/webapps/teamcity/WEB-INF/plugins/mercurial.zip     \
  && rm -f  /apache-tomcat/webapps/teamcity/WEB-INF/plugins/*-distributor.zip \
  && rm -Rf /apache-tomcat/webapps/teamcity/WEB-INF/plugins/dot*              \
