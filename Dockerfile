@@ -19,14 +19,15 @@ ENV CATALINA_OPTS \
  -Dfile.encoding=UTF-8 \
  -Duser.timezone=Europe/Paris
 
-RUN sed -i 's/<Connector port="8080"/<Connector port="8080" useBodyEncodingForURI="true"/'                            conf/server.xml \
- && sed -i 's/connectionTimeout="20000"/connectionTimeout="60000"/'                                                   conf/server.xml
+RUN sed -i 's/<Connector port="8080"/<Connector port="8080" useBodyEncodingForURI="true" socket.txBufSize="64000" socket.rxBufSize="64000"/' conf/server.xml \
+ && sed -i 's/connectionTimeout="20000"/connectionTimeout="60000"/'                                                                          conf/server.xml
 
 EXPOSE 8080
 CMD ["./bin/catalina.sh", "run"]
 
 # --------------------------------------------------------------------- teamcity
 ENV TEAMCITY_VERSION 9.0.2
+ENV TEAMCITY_GIT_PATH /usr/bin/git
 
 RUN curl -LO http://download.jetbrains.com/teamcity/TeamCity-$TEAMCITY_VERSION.war \
  && unzip -qq TeamCity-$TEAMCITY_VERSION.war -d webapps/teamcity \
