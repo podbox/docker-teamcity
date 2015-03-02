@@ -1,4 +1,4 @@
-FROM podbox/tomcat8
+FROM podbox/tomcat7
 
 RUN apt-get update \
  && apt-get install -yq git \
@@ -12,27 +12,28 @@ USER teamcity
 WORKDIR /apache-tomcat
 
 ENV CATALINA_OPTS \
- -Xmx512m \
+ -Xms768m \
+ -Xmx768m \
  -Xss256k \
+ -server \
  -XX:+UseCompressedOops \
  -XX:+UseParallelGC \
+ -Djsse.enableSNIExtension=false \
+ -Djava.awt.headless=true \
  -Dfile.encoding=UTF-8 \
  -Duser.timezone=Europe/Paris
 
-RUN sed -i 's/<Connector port="8080"/<Connector port="8080" useBodyEncodingForURI="true" socket.txBufSize="64000" socket.rxBufSize="64000"/' conf/server.xml \
- && sed -i 's/connectionTimeout="20000"/connectionTimeout="60000"/'                                                                          conf/server.xml
+RUN sed -i 's/connectionTimeout="20000"/connectionTimeout="60000" useBodyEncodingForURI="true" socket.txBufSize="64000" socket.rxBufSize="64000"/' conf/server.xml
 
 EXPOSE 8080
 CMD ["./bin/catalina.sh", "run"]
 
 # --------------------------------------------------------------------- teamcity
 ENV TEAMCITY_VERSION 9.0.2
-ENV TEAMCITY_GIT_PATH /usr/bin/git
 
 RUN curl -LO http://download.jetbrains.com/teamcity/TeamCity-$TEAMCITY_VERSION.war \
  && unzip -qq TeamCity-$TEAMCITY_VERSION.war -d webapps/teamcity \
  && rm -f TeamCity-$TEAMCITY_VERSION.war \
- && rm -f webapps/teamcity/WEB-INF/lib/tomcat-*.jar \
 
  && rm -f  webapps/teamcity/WEB-INF/plugins/clearcase.zip                  \
  && rm -f  webapps/teamcity/WEB-INF/plugins/mercurial.zip                  \
