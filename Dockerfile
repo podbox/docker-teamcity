@@ -12,7 +12,7 @@ USER teamcity
 WORKDIR /apache-tomcat
 
 ENV CATALINA_OPTS \
- -Xmx512m \
+ -Xmx768m \
  -Xss512k \
  -XX:+UseCompressedOops \
  -Dfile.encoding=UTF-8 \
