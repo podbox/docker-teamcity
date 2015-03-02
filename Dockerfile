@@ -15,12 +15,12 @@ ENV CATALINA_OPTS \
  -Xmx512m \
  -Xss256k \
  -XX:+UseCompressedOops \
+ -XX:+UseParallelGC \
  -Dfile.encoding=UTF-8 \
  -Duser.timezone=Europe/Paris
 
 RUN sed -i 's/<Connector port="8080"/<Connector port="8080" useBodyEncodingForURI="true"/'                            conf/server.xml \
- && sed -i 's/connectionTimeout="20000"/connectionTimeout="60000"/'                                                   conf/server.xml \
- && sed -i 's/<\/Context>/<Loader loaderClass="org.apache.catalina.loader.ParallelWebappClassLoader" \/><\/Context>/' conf/context.xml
+ && sed -i 's/connectionTimeout="20000"/connectionTimeout="60000"/'                                                   conf/server.xml
 
 EXPOSE 8080
 CMD ["./bin/catalina.sh", "run"]
