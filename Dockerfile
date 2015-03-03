@@ -1,4 +1,4 @@
-FROM podbox/tomcat7
+FROM podbox/tomcat8
 
 RUN apt-get update \
  && apt-get install -yq git \
@@ -17,7 +17,6 @@ ENV CATALINA_OPTS \
  -Xss256k \
  -server \
  -XX:+UseCompressedOops \
- -XX:+UseParallelGC \
  -Djsse.enableSNIExtension=false \
  -Djava.awt.headless=true \
  -Dfile.encoding=UTF-8 \
