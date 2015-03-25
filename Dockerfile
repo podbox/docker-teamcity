@@ -24,6 +24,14 @@ ENV CATALINA_OPTS \
 
 RUN sed -i 's/connectionTimeout="20000"/connectionTimeout="60000" useBodyEncodingForURI="true" socket.txBufSize="64000" socket.rxBufSize="64000"/' conf/server.xml
 
+# Redirect URL from / to teamcity/ using UrlRewriteFilter
+COPY urlrewrite/WEB-INF/lib/urlrewritefilter.jar /
+COPY urlrewrite/WEB-INF/urlrewrite.xml /
+RUN \
+  mkdir -p webapps/ROOT/WEB-INF/lib && \
+  mv /urlrewritefilter.jar webapps/ROOT/WEB-INF/lib && \
+  mv /urlrewrite.xml webapps/ROOT/WEB-INF/
+
 EXPOSE 8080
 CMD ["./bin/catalina.sh", "run"]
 
