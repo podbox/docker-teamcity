@@ -27,6 +27,8 @@ RUN sed -i 's/connectionTimeout="20000"/connectionTimeout="60000" useBodyEncodin
 # Redirect URL from / to teamcity/ using UrlRewriteFilter
 COPY urlrewrite/WEB-INF/lib/urlrewritefilter.jar /
 COPY urlrewrite/WEB-INF/urlrewrite.xml /
+RUN chown -R teamcity:teamcity /urlrewritefilter.jar
+RUN chown -R teamcity:teamcity /urlrewrite.xml
 RUN mkdir -p webapps/ROOT/WEB-INF/lib 
 RUN mv /urlrewritefilter.jar webapps/ROOT/WEB-INF/lib
 RUN mv /urlrewrite.xml webapps/ROOT/WEB-INF/
