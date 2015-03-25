@@ -7,6 +7,15 @@ RUN apt-get update \
 RUN useradd -m teamcity \
  && mkdir /logs \
  && chown -R teamcity:teamcity /apache-tomcat /logs
+ 
+# Redirect URL from / to teamcity/ using UrlRewriteFilter
+COPY urlrewrite/WEB-INF/lib/urlrewritefilter.jar /
+COPY urlrewrite/WEB-INF/urlrewrite.xml /
+RUN chown -R teamcity:teamcity /urlrewritefilter.jar
+RUN chown -R teamcity:teamcity /urlrewrite.xml
+RUN mkdir -p webapps/ROOT/WEB-INF/lib 
+RUN mv /urlrewritefilter.jar webapps/ROOT/WEB-INF/lib
+RUN mv /urlrewrite.xml webapps/ROOT/WEB-INF/
 
 USER teamcity
 WORKDIR /apache-tomcat
@@ -24,14 +33,6 @@ ENV CATALINA_OPTS \
 
 RUN sed -i 's/connectionTimeout="20000"/connectionTimeout="60000" useBodyEncodingForURI="true" socket.txBufSize="64000" socket.rxBufSize="64000"/' conf/server.xml
 
-# Redirect URL from / to teamcity/ using UrlRewriteFilter
-COPY urlrewrite/WEB-INF/lib/urlrewritefilter.jar /
-COPY urlrewrite/WEB-INF/urlrewrite.xml /
-RUN chown -R teamcity:teamcity /urlrewritefilter.jar
-RUN chown -R teamcity:teamcity /urlrewrite.xml
-RUN mkdir -p webapps/ROOT/WEB-INF/lib 
-RUN mv /urlrewritefilter.jar webapps/ROOT/WEB-INF/lib
-RUN mv /urlrewrite.xml webapps/ROOT/WEB-INF/
 
 EXPOSE 8080
 CMD ["./bin/catalina.sh", "run"]
