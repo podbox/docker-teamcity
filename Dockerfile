@@ -9,6 +9,7 @@ RUN useradd -m teamcity \
  && chown -R teamcity:teamcity /apache-tomcat /logs
  
 # Redirect URL from / to teamcity/ using UrlRewriteFilter
+WORKDIR /apache-tomcat
 COPY urlrewrite/WEB-INF/lib/urlrewritefilter.jar /
 COPY urlrewrite/WEB-INF/urlrewrite.xml /
 RUN chown -R teamcity:teamcity /urlrewritefilter.jar
@@ -18,7 +19,6 @@ RUN mv /urlrewritefilter.jar webapps/ROOT/WEB-INF/lib
 RUN mv /urlrewrite.xml webapps/ROOT/WEB-INF/
 
 USER teamcity
-WORKDIR /apache-tomcat
 
 ENV CATALINA_OPTS \
  -Xms768m \
