@@ -26,7 +26,7 @@ RUN sed -i 's/connectionTimeout="20000"/connectionTimeout="60000" useBodyEncodin
 
 EXPOSE 8080
 VOLUME ["/home/teamcity/.BuildServer"]
-CMD    ["./bin/catalina.sh", "run", "-security"]
+CMD    ["./bin/catalina.sh", "run"]
 
 # --------------------------------------------------------------------- teamcity
 ENV TEAMCITY_VERSION 9.0.3
