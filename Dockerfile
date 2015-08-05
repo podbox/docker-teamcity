@@ -28,7 +28,7 @@ EXPOSE 8080
 CMD ["./bin/catalina.sh", "run"]
 
 # --------------------------------------------------------------------- teamcity
-ENV TEAMCITY_VERSION 9.1
+ENV TEAMCITY_VERSION 9.1.1
 
 RUN curl -LO http://download.jetbrains.com/teamcity/TeamCity-$TEAMCITY_VERSION.war \
  && unzip -qq TeamCity-$TEAMCITY_VERSION.war -d webapps/teamcity \
