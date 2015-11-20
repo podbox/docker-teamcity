@@ -1,0 +1,8 @@
+<urlrewrite>
+    <rule>
+        <name>redirect from  / to teamcity url</name>
+        <condition name="path-translated" operator="notequal">teamcity</condition>
+        <from>^/(.*)$</from>
+        <to type="permanent-redirect" last="true">/teamcity/$1</to>
+    </rule>
+</urlrewrite>
