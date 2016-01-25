@@ -12,8 +12,8 @@ USER teamcity
 WORKDIR /apache-tomcat
 
 ENV CATALINA_OPTS \
- -Xms768m \
- -Xmx768m \
+ -Xms1g \
+ -Xmx2g \
  -Xss256k \
  -server \
  -XX:+UseCompressedOops \
