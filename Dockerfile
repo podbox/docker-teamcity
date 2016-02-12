@@ -39,10 +39,17 @@ RUN curl -LO http://download.jetbrains.com/teamcity/TeamCity-$TEAMCITY_VERSION.w
  && rm -f  webapps/teamcity/WEB-INF/plugins/eclipse-plugin-distributor.zip \
  && rm -f  webapps/teamcity/WEB-INF/plugins/vs-addin-distributor.zip       \
  && rm -f  webapps/teamcity/WEB-INF/plugins/win32-distributor.zip          \
- && rm -fR webapps/teamcity/WEB-INF/plugins/svn                            \
  && rm -fR webapps/teamcity/WEB-INF/plugins/tfs                            \
  && rm -fR webapps/teamcity/WEB-INF/plugins/vss                            \
  && rm -fR webapps/teamcity/WEB-INF/plugins/dot*                           \
+ && rm -fR webapps/teamcity/WEB-INF/plugins/visualstudiotest               \
+ && rm -fR webapps/teamcity/WEB-INF/plugins/windowsTray                    \
 
  && echo '\n<meta name="mobile-web-app-capable" content="yes"/>' >> webapps/teamcity/WEB-INF/tags/pageMeta.tag \
  && echo '\n<meta name="theme-color" content="#000"/>'           >> webapps/teamcity/WEB-INF/tags/pageMeta.tag
+
+# ---------------------------------------------------- slack notification plugin
+ENV SLACK_NOTIFICATION_PLUGIN_VERSION 1.4.4
+
+RUN cd webapps/teamcity/WEB-INF/plugins \
+ && curl -LO https://github.com/PeteGoo/tcSlackBuildNotifier/releases/download/$SLACK_NOTIFICATION_PLUGIN_VERSION/tcSlackNotificationsPlugin.zip
